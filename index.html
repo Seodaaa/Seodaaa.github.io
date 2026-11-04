@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Skye Huang</title>
+<meta name="description" content="Skye Huang, business & financial operations analyst. Some of these numbers are about you.">
+<meta property="og:title" content="Skye Huang">
+<meta property="og:description" content="Some of these numbers are about you.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23111'/%3E%3Ctext x='16' y='22' font-family='monospace' font-size='18' fill='%23fff' text-anchor='middle'%3E0.%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<style>
+  body { overflow: hidden; }
+  .stage { position: relative; height: 100vh; height: 100dvh; min-height: 560px; overflow: hidden; }
+  .rain { position: absolute; inset: 0; transition: opacity .3s; }
+  .rain.dim { opacity: 0.12; }
+
+  @keyframes fall { from { top: -8%; } to { top: 104%; } }
+  .drop { position: absolute; animation: fall linear infinite; white-space: nowrap; }
+  .noise { color: var(--noise); pointer-events: none; }
+  .live {
+    font-size: 26px; font-weight: 600; color: var(--ink);
+    background: transparent; border: 0; padding: 10px; cursor: pointer;
+  }
+  .live:hover, .live:focus-visible { animation-play-state: paused; text-decoration: underline; text-underline-offset: 6px; }
+
+  .top { position: absolute; top: 0; left: 0; right: 0; display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 24px 28px; pointer-events: none; }
+  .top > * { pointer-events: auto; }
+  .name { font-size: 14px; font-weight: 600; letter-spacing: 0.04em; }
+  .top nav { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; justify-content: flex-end; }
+
+  .bottom { position: absolute; left: 0; right: 0; bottom: 0; display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; padding: 24px 28px; pointer-events: none; }
+  .hint { margin: 0; font-size: 15px; line-height: 1.6; background: var(--paper); padding: 4px 6px; pointer-events: auto; }
+  .scribble { width: 56px; height: auto; transform: rotate(8deg); opacity: .9; }
+
+  @keyframes fadein { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+  .overlay { position: absolute; inset: 0; display: none; z-index: 10; }
+  .overlay.open { display: flex; }
+
+  #card { align-items: center; justify-content: center; padding: 24px; }
+  .card { width: 100%; max-width: 560px; background: var(--paper); border: 1px solid var(--ink); padding: 36px; display: flex; flex-direction: column; gap: 18px; animation: fadein .35s ease-out; }
+  .card .big { margin: 0; font-size: 64px; font-weight: 600; line-height: 1; overflow-wrap: anywhere; }
+  .card .line { margin: 0; font-size: 16px; line-height: 1.6; }
+  .story { border-top: 1px solid var(--line); padding-top: 18px; display: flex; flex-direction: column; gap: 8px; }
+  .story h3 { margin: 0; font-size: 18px; font-weight: 600; }
+  .story p { margin: 0; font-size: 15px; line-height: 1.6; }
+  .row { display: flex; flex-wrap: wrap; gap: 12px; padding-top: 6px; }
+
+  #report { background: var(--paper); overflow-y: auto; justify-content: center; padding: 80px 24px 48px; }
+  .report { width: 100%; max-width: 760px; display: flex; flex-direction: column; gap: 28px; animation: fadein .35s ease-out; }
+  .report h1 { margin: 0; font-size: 34px; font-weight: 600; line-height: 1.25; }
+  .report .note { margin: 0; font-size: 15px; line-height: 1.6; color: var(--muted); }
+  .stat { display: flex; flex-direction: column; gap: 6px; border-top: 1px solid var(--line); padding: 16px 0; }
+  .stat .head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 12px; }
+  .stat .label { font-size: 15px; color: var(--muted); }
+  .stat .value { font-size: 22px; font-weight: 600; }
+  .stat .says { font-size: 14px; line-height: 1.5; }
+  .report .row { border-top: 1px solid var(--ink); padding-top: 24px; }
+
+  @media (max-width: 560px) {
+    .live { font-size: 22px; }
+    .card { padding: 24px; }
+    .card .big { font-size: 48px; }
+    .report h1 { font-size: 26px; }
+  }
+</style>
+</head>
+<body>
+<div class="stage" id="stage">
+  <div class="rain" id="rain"></div>
+
+  <header class="top">
+    <span class="name">skye huang</span>
+    <nav>
+      <a class="btn quiet" href="work.html">work</a>
+      <button class="btn quiet" type="button" id="noticeBtn">what did you notice? →</button>
+    </nav>
+  </header>
+
+  <footer class="bottom">
+    <p class="hint" id="hint">some of these numbers are <span class="hl"><span>about you</span></span>.<br>click one.</p>
+    <img class="scribble" src="assets/scribble.png" alt="" aria-hidden="true">
+  </footer>
+
+  <div class="overlay" id="card" role="dialog" aria-modal="true" aria-labelledby="cardLabel">
+    <div class="card">
+      <p class="kicker" id="cardLabel"></p>
+      <p class="big" id="cardValue"></p>
+      <p class="line" id="cardLine"></p>
+      <div class="story">
+        <p class="kicker"><img class="arrow" src="assets/arrow.png" alt=""> which reminds me</p>
+        <h3 id="storyTitle"></h3>
+        <p id="storyBody"></p>
+      </div>
+      <div class="row">
+        <button class="btn dark" type="button" data-close>back to the rain</button>
+        <button class="btn quiet" type="button" data-report>everything I noticed →</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="overlay" id="report" role="dialog" aria-modal="true" aria-labelledby="reportTitle">
+    <div class="report">
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <p class="kicker">your visit, by the numbers</p>
+        <h1 id="reportTitle">Hi, I'm Skye. <span class="hl"><span>Noticing things</span></span> is kind of my thing.</h1>
+        <p class="note">Nothing here is saved or sent anywhere. It only lives in this tab.</p>
+      </div>
+      <div id="stats"></div>
+      <div class="row">
+        <a class="btn" href="work.html">see my work →</a>
+        <a class="btn dark" href="mailto:jyhuang.skye@gmail.com">email</a>
+        <a class="btn" href="https://www.linkedin.com/in/jingyi-huang-749977227/" target="_blank" rel="noopener">linkedin</a>
+        <button class="btn quiet" type="button" data-close>back to the rain</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="js/rain.js"></script>
+</body>
+</html>

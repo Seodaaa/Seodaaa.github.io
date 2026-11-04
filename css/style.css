@@ -1,0 +1,65 @@
+:root {
+  --ink: #111111;
+  --muted: #555555;
+  --soft: #6b6b6b;
+  --line: #e2e2e2;
+  --noise: #c9c9c9;
+  --paper: #ffffff;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+a { color: var(--ink); }
+a:hover { color: var(--muted); }
+
+button { font-family: inherit; }
+
+:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
+
+/* her lavender highlighter, scanned from her notes */
+.hl { position: relative; display: inline-block; }
+.hl::before {
+  content: "";
+  position: absolute;
+  left: -5px; right: -5px; top: 14%; bottom: 4%;
+  background: url("../assets/highlight.png") center / 100% 100% no-repeat;
+  z-index: 0;
+}
+.hl > span { position: relative; z-index: 1; }
+
+.kicker {
+  margin: 0;
+  font-size: 13px;
+  color: var(--soft);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.btn {
+  display: inline-block;
+  font-size: 14px;
+  text-decoration: none;
+  color: var(--ink);
+  background: var(--paper);
+  border: 1px solid var(--ink);
+  padding: 11px 15px;
+  cursor: pointer;
+  transition: transform .15s ease;
+}
+.btn:hover { transform: translate(-2px, -2px); color: var(--ink); }
+.btn.dark { color: #fff; background: var(--ink); }
+.btn.dark:hover { color: #fff; }
+.btn.quiet { color: var(--muted); }
+
+.arrow { height: 15px; width: auto; vertical-align: -2px; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
