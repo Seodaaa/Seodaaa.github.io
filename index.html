@@ -47,6 +47,8 @@
   .story { border-top: 1px solid var(--line); padding-top: 18px; display: flex; flex-direction: column; gap: 8px; }
   .story h3 { margin: 0; font-size: 18px; font-weight: 600; }
   .story p { margin: 0; font-size: 15px; line-height: 1.6; }
+  .story .bridge { font-size: 14px; color: var(--muted); font-style: italic; }
+  .story-link { align-self: flex-start; font-size: 14px; margin-top: 2px; }
   .row { display: flex; flex-wrap: wrap; gap: 12px; padding-top: 6px; }
 
   #report { background: var(--paper); overflow-y: auto; justify-content: center; padding: 80px 24px 48px; }
@@ -92,8 +94,10 @@
       <p class="line" id="cardLine"></p>
       <div class="story">
         <p class="kicker"><img class="arrow" src="assets/arrow.png" alt=""> which reminds me</p>
+        <p class="bridge" id="storyBridge"></p>
         <h3 id="storyTitle"></h3>
         <p id="storyBody"></p>
+        <a class="story-link" id="storyLink" href="work.html" hidden></a>
       </div>
       <div class="row">
         <button class="btn dark" type="button" data-close>back to the rain</button>

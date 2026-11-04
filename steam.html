@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>What makes a Steam game earn? · Skye Huang</title>
+<meta name="description" content="Do happier players mean more revenue? A Python and SQL analysis of Steam, SteamSpy, IGDB and publisher revenue data.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23111'/%3E%3Ctext x='16' y='22' font-family='monospace' font-size='18' fill='%23fff' text-anchor='middle'%3E0.%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/project.css">
+</head>
+<body>
+<div class="page">
+
+  <header class="top">
+    <a class="name" href="index.html">skye huang</a>
+    <nav>
+      <a href="index.html">the rain</a>
+      <a href="work.html">work</a>
+      <a href="work.html#contact">contact</a>
+    </nav>
+  </header>
+
+  <section class="intro">
+    <p class="kicker">project · Jan – Mar 2026 · with Alen Chan</p>
+    <h1>Do happier players mean <span class="hl"><span>more money</span></span>?</h1>
+    <p class="answer">Not really. Across thousands of Steam games, <strong>how many people reviewed a game</strong> told us far more about its publisher's revenue than <strong>how much they liked it</strong>.</p>
+  </section>
+
+  <section>
+    <div class="sec-head"><h2>the setup</h2><span>01</span></div>
+    <div class="facts">
+      <div class="fact"><b>4</b><span>data sources: Steam store, SteamSpy, IGDB and Gamalytic publisher revenue</span></div>
+      <div class="fact"><b>~11,400</b><span>games matched to a publisher</span></div>
+      <div class="fact"><b>3</b><span>signals tested: review score, review volume, player engagement</span></div>
+    </div>
+    <p class="prose" style="margin-top:20px">We merged the four sources in Python and SQLite, cleaned out unstable review labels and non-game entries, then compared simple regression models to see which signal best explains publisher revenue on games the models hadn't seen.</p>
+  </section>
+
+  <section>
+    <div class="sec-head"><h2>what explains revenue</h2><span>02</span></div>
+    <figure class="chart">
+      <h3>Share of publisher revenue each signal explains</h3>
+      <div class="bars" id="r2bars">
+        <div class="bar-row"><span>review score</span><div class="bar-track"><div class="bar-fill" data-w="2.2"></div><span class="bar-val" data-left="2.2">0.3%</span></div></div>
+        <div class="bar-row"><span>player engagement</span><div class="bar-track"><div class="bar-fill" data-w="0"></div><span class="bar-val" data-left="0">~0%</span></div></div>
+        <div class="bar-row"><span>review volume</span><div class="bar-track"><div class="bar-fill" data-w="71.9"></div><span class="bar-val" data-left="71.9">8.6%</span></div></div>
+        <div class="bar-row"><span>all three together</span><div class="bar-track"><div class="bar-fill soft" data-w="89.2"></div><span class="bar-val" data-left="89.2">10.7%</span></div></div>
+      </div>
+      <figcaption>R² on held-out games (log publisher revenue). Review volume does most of the work. Even all three together explain only about a tenth, so most of what drives revenue isn't in this data.</figcaption>
+    </figure>
+  </section>
+
+  <section>
+    <div class="sec-head"><h2>reach vs. engagement</h2><span>03</span></div>
+    <figure class="chart">
+      <h3 id="colTitle">Typical publisher revenue, by how many reviews a game has</h3>
+      <div class="toggle" role="group" aria-label="Group games by">
+        <button type="button" aria-pressed="true" data-set="volume">by review volume</button>
+        <button type="button" aria-pressed="false" data-set="engagement">by player engagement</button>
+      </div>
+      <div class="cols" id="cols">
+        <div class="col"><span class="v"></span><div class="b"></div></div>
+        <div class="col"><span class="v"></span><div class="b"></div></div>
+        <div class="col"><span class="v"></span><div class="b"></div></div>
+        <div class="col"><span class="v"></span><div class="b"></div></div>
+      </div>
+      <div class="col-labels"><span>lowest 25%</span><span>2nd</span><span>3rd</span><span>highest 25%</span></div>
+      <figcaption id="colNote"></figcaption>
+    </figure>
+  </section>
+
+  <section>
+    <div class="sec-head"><h2>what this can't tell us</h2><span>04</span></div>
+    <ul class="limits">
+      <li>Revenue is measured per <em>publisher</em>, not per game, so a weak game from a giant publisher still looks "rich."</li>
+      <li>These are associations, not causes. Marketing spend, wishlists and store promotion weren't in the data.</li>
+      <li>Engagement is a snapshot (concurrent players vs. estimated owners), not long-term retention.</li>
+    </ul>
+  </section>
+
+  <section>
+    <div class="sec-head"><h2>see it all</h2><span>05</span></div>
+    <div class="links">
+      <a class="btn dark" href="https://github.com/Seodaaa/steam-game-revenue-analysis" target="_blank" rel="noopener">code &amp; notebook on github →</a>
+      <a class="btn" href="https://github.com/Seodaaa/steam-game-revenue-analysis/blob/main/Data%20Final%20Presentation%20-%20Skye%20and%20Alen.pdf" target="_blank" rel="noopener">slides (pdf)</a>
+    </div>
+    <p class="prose" style="margin-top:16px;font-size:13px;color:var(--soft)">Python · pandas · SQL · SQLite · scikit-learn · statsmodels</p>
+  </section>
+
+  <nav class="next">
+    <a href="work.html">← back to work</a>
+    <a href="streaming.html">next project: streaming platforms →</a>
+  </nav>
+
+</div>
+<script>
+(function () {
+  // R² bars grow in on load
+  var bars = document.querySelectorAll('#r2bars .bar-row');
+  requestAnimationFrame(function () {
+    bars.forEach(function (row) {
+      var f = row.querySelector('.bar-fill'), v = row.querySelector('.bar-val');
+      f.style.width = f.dataset.w + '%';
+      if (+v.dataset.left > 60) {
+        v.style.left = 'calc(' + v.dataset.left + '% - 8px)';
+        v.style.transform = 'translate(-100%, -50%)';
+        if (!f.classList.contains('soft')) v.style.color = '#fff';
+      } else {
+        v.style.left = 'calc(' + v.dataset.left + '% + 8px)';
+      }
+    });
+  });
+
+  // typical (geometric-mean) publisher revenue by quartile, in $ millions, from the notebook
+  var DATA = {
+    volume: { vals: [25.4, 40.5, 67.5, 128.6],
+      title: 'Typical publisher revenue, by how many reviews a game has',
+      note: 'Publishers behind the most-reviewed games earned about 5× more than those behind the least-reviewed. About 2,850 games per group; typical = geometric mean.' },
+    engagement: { vals: [67.4, 70.2, 77.7, 91.0],
+      title: 'Typical publisher revenue, by how engaged a game’s players are',
+      note: 'Sorting by engagement instead barely moves the needle: about 1.35× from bottom to top. (Uses the ~6,900 games with engagement data.)' }
+  };
+  var MAX = 140;
+  var cols = document.querySelectorAll('#cols .col');
+  function show(key) {
+    var d = DATA[key];
+    cols.forEach(function (c, i) {
+      c.querySelector('.b').style.height = (d.vals[i] / MAX * 100 * 0.85) + '%';
+      c.querySelector('.v').textContent = '$' + Math.round(d.vals[i]) + 'M';
+    });
+    document.getElementById('colTitle').textContent = d.title;
+    document.getElementById('colNote').textContent = d.note;
+    document.querySelectorAll('.toggle button').forEach(function (b) {
+      b.setAttribute('aria-pressed', b.dataset.set === key ? 'true' : 'false');
+    });
+  }
+  document.querySelectorAll('.toggle button').forEach(function (b) {
+    b.addEventListener('click', function () { show(b.dataset.set); });
+  });
+  show('volume');
+})();
+</script>
+</body>
+</html>

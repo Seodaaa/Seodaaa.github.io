@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Who is each streaming platform, really? · Skye Huang</title>
+<meta name="description" content="How Netflix, Hulu, Max, Peacock and Prime Video position themselves, using 2,000 titles from the TMDB API, Python and Tableau.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23111'/%3E%3Ctext x='16' y='22' font-family='monospace' font-size='18' fill='%23fff' text-anchor='middle'%3E0.%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/project.css">
+</head>
+<body>
+<div class="page">
+
+  <header class="top">
+    <a class="name" href="index.html">skye huang</a>
+    <nav>
+      <a href="index.html">the rain</a>
+      <a href="work.html">work</a>
+      <a href="work.html#contact">contact</a>
+    </nav>
+  </header>
+
+  <section class="intro">
+    <p class="kicker">project · Mar – Jun 2026 · with Kenyee Liu</p>
+    <h1>Who is each streaming platform, <span class="hl"><span>really</span></span>?</h1>
+    <p class="answer">They don't compete the same way. <strong>Netflix</strong> is the only one that's both popular and well rated, <strong>Max</strong> bets on quality over reach, and <strong>Peacock</strong> sits apart from everyone.</p>
+  </section>
+
+  <section>
+    <div class="sec-head"><h2>the setup</h2><span>01</span></div>
+    <div class="facts">
+      <div class="fact"><b>5</b><span>platforms: Netflix, Hulu, Max, Peacock, Prime Video</span></div>
+      <div class="fact"><b>2,000</b><span>titles from the TMDB API, 400 per platform, half movies and half TV</span></div>
+      <div class="fact"><b>1</b><span>snapshot in time. Catalogs change constantly.</span></div>
+    </div>
+    <p class="prose" style="margin-top:20px">Streaming services keep their real numbers private, so we built our own dataset: a Python script pulled availability, genres, popularity and ratings from TMDB. Disney+ was dropped because it had too few usable titles to compare fairly. We built the analysis and dashboards in Tableau.</p>
+  </section>
+
+  <section>
+    <div class="sec-head"><h2>where each one competes</h2><span>02</span></div>
+    <figure class="chart">
+      <h3>Popularity vs. perceived quality <span style="font-weight:400;color:var(--soft)">(tap a platform)</span></h3>
+      <div class="map" id="map">
+        <div class="mid-x" style="left:42.7%"></div>
+        <div class="mid-y" style="bottom:57.0%"></div>
+        <span class="quad" style="left:8px;top:8px">loved, less seen</span>
+        <span class="quad" style="right:8px;top:8px">popular &amp; loved</span>
+        <span class="quad" style="right:8px;bottom:8px">popular, less loved</span>
+        <span class="axis-x">more popular →</span>
+        <span class="axis-y">better rated →</span>
+      </div>
+      <p class="map-note" id="mapNote" aria-live="polite">Each dot is a platform's median title. Dashed lines are the median across all five.</p>
+      <figcaption>Popularity = TMDB popularity score (attention, not viewership). Quality = a weighted rating that accounts for how many people voted. Redrawn from our cleaned dataset.</figcaption>
+    </figure>
+  </section>
+
+  <section>
+    <div class="sec-head"><h2>exclusivity</h2><span>03</span></div>
+    <figure class="chart">
+      <h3>Share of each catalog found on no other platform</h3>
+      <div class="bars" id="exBars">
+        <div class="bar-row"><span>Max</span><div class="bar-track"><div class="bar-fill" data-w="87.5"></div><span class="bar-val" data-left="87.5">88%</span></div></div>
+        <div class="bar-row"><span>Netflix</span><div class="bar-track"><div class="bar-fill" data-w="82.0"></div><span class="bar-val" data-left="82.0">82%</span></div></div>
+        <div class="bar-row"><span>Hulu</span><div class="bar-track"><div class="bar-fill" data-w="75.8"></div><span class="bar-val" data-left="75.8">76%</span></div></div>
+        <div class="bar-row"><span>Peacock</span><div class="bar-track"><div class="bar-fill" data-w="73.8"></div><span class="bar-val" data-left="73.8">74%</span></div></div>
+        <div class="bar-row"><span>Prime Video</span><div class="bar-track"><div class="bar-fill" data-w="70.2"></div><span class="bar-val" data-left="70.2">70%</span></div></div>
+      </div>
+      <figcaption>Max and Netflix lean hardest on titles you can't get elsewhere. "Exclusive" means it appeared on only one platform in our sample, a proxy rather than real licensing data.</figcaption>
+    </figure>
+  </section>
+
+  <section>
+    <div class="sec-head"><h2>what this can't tell us</h2><span>04</span></div>
+    <ul class="limits">
+      <li>No subscribers, watch time or revenue. Those are private, so this is about positioning, not performance.</li>
+      <li>TMDB popularity measures attention on TMDB, not how many people actually watched.</li>
+      <li>One snapshot of five catalogs; the picture shifts as titles come and go.</li>
+    </ul>
+  </section>
+
+  <section>
+    <div class="sec-head"><h2>see it all</h2><span>05</span></div>
+    <div class="links">
+      <a class="btn dark" href="https://github.com/Seodaaa/tmdb-streaming-platform-analysis" target="_blank" rel="noopener">project on github →</a>
+      <a class="btn" href="https://github.com/Seodaaa/tmdb-streaming-platform-analysis/blob/main/Streaming%20Platform%20Content%20Identity%20Slide%20Deck.pdf" target="_blank" rel="noopener">slide deck (pdf)</a>
+    </div>
+    <p class="prose" style="margin-top:16px;font-size:13px;color:var(--soft)">Python · pandas · TMDB API · Tableau · Canva</p>
+  </section>
+
+  <nav class="next">
+    <a href="steam.html">← previous project: Steam games</a>
+    <a href="work.html">back to work →</a>
+  </nav>
+
+</div>
+<script>
+(function () {
+  // medians per platform from Cleaned_dataset.csv
+  var P = [
+    { name: 'Netflix', pop: 21.24, wr: 5.57, note: 'Netflix: popular and well rated. The only platform high on both.' },
+    { name: 'Hulu', pop: 20.54, wr: 5.47, left: true, note: 'Hulu: nearly as popular as Netflix, rated a little lower.' },
+    { name: 'Max', pop: 12.41, wr: 5.70, note: 'Max: the highest rated, but less popular. Prestige over reach.' },
+    { name: 'Prime Video', pop: 19.16, wr: 4.80, note: 'Prime Video: fairly popular, rated lower. It competes on catalog breadth.' },
+    { name: 'Peacock', pop: 11.12, wr: 4.33, note: 'Peacock: lowest on both in this sample, and the most set apart from the others.' }
+  ];
+  var X0 = 9, X1 = 23.5, Y0 = 4.1, Y1 = 6.0;
+  var map = document.getElementById('map'), note = document.getElementById('mapNote');
+  var buttons = P.map(function (p) {
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'dot' + (p.left ? ' left' : '');
+    b.style.left = ((p.pop - X0) / (X1 - X0) * 100) + '%';
+    b.style.bottom = ((p.wr - Y0) / (Y1 - Y0) * 100) + '%';
+    b.setAttribute('aria-pressed', 'false');
+    b.innerHTML = '<i></i><span></span>';
+    b.querySelector('span').textContent = p.name;
+    b.addEventListener('click', function () {
+      buttons.forEach(function (o) { o.setAttribute('aria-pressed', 'false'); });
+      b.setAttribute('aria-pressed', 'true');
+      note.textContent = p.note + ' (median popularity ' + p.pop.toFixed(1) + ', rating ' + p.wr.toFixed(2) + ')';
+    });
+    map.appendChild(b);
+    return b;
+  });
+
+  var rows = document.querySelectorAll('#exBars .bar-row');
+  requestAnimationFrame(function () {
+    rows.forEach(function (row) {
+      var f = row.querySelector('.bar-fill'), v = row.querySelector('.bar-val');
+      f.style.width = f.dataset.w + '%';
+      if (+v.dataset.left > 60) {
+        v.style.left = 'calc(' + v.dataset.left + '% - 8px)';
+        v.style.transform = 'translate(-100%, -50%)';
+        if (!f.classList.contains('soft')) v.style.color = '#fff';
+      } else {
+        v.style.left = 'calc(' + v.dataset.left + '% + 8px)';
+      }
+    });
+  });
+})();
+</script>
+</body>
+</html>

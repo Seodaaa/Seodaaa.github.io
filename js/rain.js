@@ -1,25 +1,35 @@
 // Numbers made of you.
 // Everything here stays in this tab: nothing is stored or sent anywhere.
 (function () {
+  // bridge = why this number reminds me of the story; link is optional
   var STATS = [
     { key: 'dist', label: 'pixels your mouse has traveled',
-      storyTitle: 'Finding the real number',
-      storyBody: 'An accounting system said a small company owed far more than it really did. I traced where the gap came from and rebuilt the true number, one invoice at a time.' },
+      bridge: 'Little movements add up fast. So do little mistakes.',
+      storyTitle: 'One digit, about forty thousand dollars',
+      storyBody: 'A $211K revenue spreadsheet was overstated by $43.7K. I traced it back to a single misplaced decimal in one owner’s share.',
+      link: { href: 'work.html', text: 'more about my work →' } },
     { key: 'look', label: 'seconds you looked before moving',
+      bridge: 'Looking before acting is how I build things too.',
       storyTitle: 'Look before you click',
-      storyBody: 'At work I built small Python tools that check the data before anything runs, so problems get caught first instead of cleaned up later.' },
+      storyBody: 'At work I built small Python tools that check the data before anything runs, so problems get caught first instead of cleaned up later.',
+      link: { href: 'work.html', text: 'more about my work →' } },
     { key: 'almost', label: 'times you hovered over one number without clicking it',
+      bridge: 'Hesitation is data. It’s what got me into psychology.',
       storyTitle: 'Why people do what they do',
-      storyBody: 'I studied psychology because I wanted to know why people decide the way they do. I still use it every day, from reading data to designing things people actually enjoy using.' },
+      storyBody: 'I studied psychology at UC San Diego to understand why people pause, choose or walk away. I still use it, whether I’m reading customer data or designing something people should enjoy.' },
     { key: 'away', label: 'times you left this tab and came back',
+      bridge: 'Leaving and coming back is kind of my story too.',
       storyTitle: 'Where I’ve been',
-      storyBody: 'Shenzhen, San Diego, Chicago, Houston. Psychology at UC San Diego, then a Master in Management at Chicago Booth. Next stop: wherever the right team is.' },
+      storyBody: 'Shenzhen, San Diego for psychology, Chicago for Booth, now Houston. Next stop: wherever the right team is.' },
     { key: 'side', label: 'of your time spent on the left half of the screen',
-      storyTitle: 'What makes people buy a game?',
-      storyBody: 'Using Steam, SteamSpy and IGDB data in Python and SQL, I tested what predicts a game’s revenue. How many people reviewed a game mattered more than what they said.' },
+      bridge: 'I’m reading what you do, not what you’d tell me. One of my projects found the same thing about games.',
+      storyTitle: 'What people do vs. what they say',
+      storyBody: 'Using Steam, SteamSpy and IGDB data, we tested what predicts a game’s revenue. How many people reviewed a game mattered more than what they said.',
+      link: { href: 'steam.html', text: 'see the project →' } },
     { key: 'still', label: 'seconds since your mouse last moved',
+      bridge: 'Stillness usually means focus. I designed a whole app around that.',
       storyTitle: 'An app about focus',
-      storyBody: 'I taught myself Figma to design a gamified productivity app built on behavioral psychology, with focus mechanics at its core. It’s small and a little silly, and I made every screen myself.' }
+      storyBody: 'I taught myself Figma to design a gamified productivity app built on behavioral psychology. It’s small and a little silly, and I made every screen myself.' }
   ];
 
   var rain = document.getElementById('rain');
@@ -162,8 +172,12 @@
       document.getElementById('cardLabel').textContent = st.label;
       document.getElementById('cardValue').textContent = r[st.key].value;
       document.getElementById('cardLine').textContent = r[st.key].line;
+      document.getElementById('storyBridge').textContent = st.bridge;
       document.getElementById('storyTitle').textContent = st.storyTitle;
       document.getElementById('storyBody').textContent = st.storyBody;
+      var a = document.getElementById('storyLink');
+      if (st.link) { a.href = st.link.href; a.textContent = st.link.text; a.hidden = false; }
+      else { a.hidden = true; }
     }
   }
 
