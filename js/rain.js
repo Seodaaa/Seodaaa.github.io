@@ -4,9 +4,10 @@
   // bridge = why this number reminds me of the story; link is optional
   var STATS = [
     { key: 'dist', label: 'pixels your mouse has traveled',
-      bridge: 'Little movements add up fast. So do little mistakes.',
-      storyTitle: 'One digit, about forty thousand dollars',
-      storyBody: 'A $211K revenue spreadsheet was overstated by $43.7K. I traced it back to a single misplaced decimal in one owner’s share.',
+      // {dist} is replaced with the visitor's live pixel count
+      bridge: 'You’ve moved your mouse {dist} pixels to get here. At work, I taught a script to do the moving for me.',
+      storyTitle: 'The script that types for me',
+      storyBody: 'Entering invoices into an oil & gas accounting system meant hours of clicking and typing. I built a little AutoHotkey script, with a lot of AI help, that types them in on its own, then stops so a person can check the totals before anything is saved. When I showed it to the team, the reaction was basically “damn, that’s cool.”',
       link: { href: 'work.html', text: 'more about my work →' } },
     { key: 'look', label: 'seconds you looked before moving',
       bridge: 'Looking before acting is how I build things too.',
@@ -172,7 +173,7 @@
       document.getElementById('cardLabel').textContent = st.label;
       document.getElementById('cardValue').textContent = r[st.key].value;
       document.getElementById('cardLine').textContent = r[st.key].line;
-      document.getElementById('storyBridge').textContent = st.bridge;
+      document.getElementById('storyBridge').textContent = st.bridge.replace('{dist}', r.dist.value);
       document.getElementById('storyTitle').textContent = st.storyTitle;
       document.getElementById('storyBody').textContent = st.storyBody;
       var a = document.getElementById('storyLink');
