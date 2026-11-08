@@ -198,9 +198,34 @@
     return b;
   });
 
+  // ---------- anonymous event counts (GoatCounter) ----------
+  // Only counts *that* something happened (e.g. "opened: dist"). No mouse paths, no personal data.
+  var MODE = TOUCH ? 'touch' : 'mouse';
+  var opened = {}, firstOpened = false, sentLeave = false;
+  function track(path, title) {
+    try {
+      if (window.goatcounter && window.goatcounter.count) {
+        window.goatcounter.count({ path: path, title: title || path, event: true });
+      }
+    } catch (e) { /* never let stats break the page */ }
+  }
+  document.addEventListener('visibilitychange', function () {
+    if (document.hidden && !sentLeave) {
+      sentLeave = true;
+      track('found-before-leaving/' + Object.keys(opened).length + '-of-' + STATS.length,
+            'numbers opened before leaving (' + MODE + ')');
+    }
+  });
+  document.getElementById('storyLink').addEventListener('click', function () {
+    if (openIndex !== null) track('story-link/' + STATS[openIndex].key, 'clicked through from a card');
+  });
+
   // ---------- overlays ----------
   function setDim() { rain.classList.toggle('dim', openIndex !== null || reportOpen); }
   function openCard(idx) {
+    var key = STATS[idx].key;
+    if (!firstOpened) { firstOpened = true; track('first-number/' + key, 'first number opened (' + MODE + ')'); }
+    if (!opened[key]) { opened[key] = true; track('opened/' + key, 'opened a number (' + MODE + ')'); }
     openIndex = idx; reportOpen = false;
     report.classList.remove('open'); card.classList.add('open');
     setDim(); render();
@@ -208,6 +233,7 @@
     card.querySelector('[data-close]').focus({ preventScroll: true });
   }
   function openReport() {
+    track('opened/what-i-noticed', 'opened the results page (' + MODE + ')');
     openIndex = null; reportOpen = true;
     card.classList.remove('open'); report.classList.add('open');
     setDim(); render();
