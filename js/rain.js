@@ -14,8 +14,7 @@
                bridge: 'You’ve moved your thumb {dist} pixels to get here. At work, I taught a script to do the moving for me.',
                bridgeZero: 'You got here without moving your thumb at all. At work, I taught a script to do the moving for me too.' },
       storyTitle: 'The script that types for me',
-      storyBody: 'Entering invoices into an oil & gas accounting system meant hours of clicking and typing. I built a little AutoHotkey script, with a lot of AI help, that types them in on its own, then stops so a person can check the totals before anything is saved. When I showed it to the team, the reaction was basically “damn, that’s cool.”',
-      link: { href: 'work.html', text: 'more about my work →' } },
+      storyBody: 'Entering invoices into an oil & gas accounting system meant hours of clicking and typing. I built a little AutoHotkey script, with a lot of AI help, that types them in on its own, then stops so a person can check the totals before anything is saved. When I showed it to the team, the reaction was basically “damn, that’s cool.”' },
     { key: 'look', label: 'seconds you looked before moving',
       touch: { label: 'seconds you looked before touching anything' },
       bridge: 'Looking before acting is how I build things too.',
@@ -57,7 +56,7 @@
   var dist = 0, last = null, firstMove = null, lastMove = null, mx = null;
   var leftTicks = 0, sideTicks = 0, away = 0, wasHidden = false;
   var hovers = {}, clicked = {}, misses = 0, touching = false, gesture = null;
-  var openIndex = null, reportOpen = false;
+  var openIndex = null, reportOpen = false, piled = false;
 
   function touched() {
     var now = Date.now();
@@ -105,6 +104,13 @@
     else if (wasHidden) { wasHidden = false; away += 1; }
   });
 
+  // "Liking what you see? 5 more are waiting." / "One more is waiting." / all found
+  function moreLine() {
+    var left = STATS.length - Object.keys(opened || {}).length;
+    if (left <= 0) return ' You’ve seen all ' + STATS.length + '.';
+    return ' Liking what you see? ' + (left === 1 ? 'One more is waiting.' : left + ' more are waiting.');
+  }
+
   function readings() {
     var now = Date.now();
     var px = Math.round(dist);
@@ -125,7 +131,7 @@
       var missLine = misses >= 2 ? 'You’ve missed ' + misses + ' times. They’re slippery, I know. Every miss tells me what you were aiming for.'
         : misses === 1 ? 'One miss. Happens to everyone.' : 'Not a single miss. Steady thumbs.';
       return {
-        dist: { value: px.toLocaleString('en-US'), px: px, line: px > 0 ? 'That’s ' + distance + ' of thumb travel. I notice small things like that.' : 'Your thumb hasn’t slid anywhere yet. Try dragging it around and watch this change.' },
+        dist: { value: px.toLocaleString('en-US'), px: px, line: px > 0 ? 'That’s ' + distance + ' of looking around.' + moreLine() : 'Your thumb hasn’t slid anywhere yet. Try dragging it around and watch this change.' },
         look: { value: lookSecs.toFixed(1), line: firstMove ? (lookSecs >= 2 ? 'You looked before you tapped. I respect that.' : 'You dove right in. I respect that too.') : 'You haven’t touched anything yet. Taking it all in?' },
         almost: { value: String(misses), line: missLine },
         away: { value: String(away), line: awayLine },
@@ -142,7 +148,7 @@
     else if (sidePct < 45) sideLineM = 'You lean right. Right-handed mouse, or just a little contrarian?';
     else sideLineM = 'Almost exactly half and half. Very fair of you.';
     return {
-      dist: { value: px.toLocaleString('en-US'), px: px, line: 'That’s ' + distance + ' of mouse travel. I notice small things like that.' },
+      dist: { value: px.toLocaleString('en-US'), px: px, line: 'That’s ' + distance + ' of looking around.' + moreLine() },
       look: { value: lookSecs.toFixed(1), line: firstMove ? (lookSecs >= 2 ? 'You looked before you leapt. I respect that.' : 'You dove right in. I respect that too.') : 'You still haven’t moved your mouse. Taking it all in?' },
       almost: { value: String(almost), line: almost >= 2 ? 'There’s a number you hovered over ' + almost + ' times without clicking. Curious but cautious? I won’t tell you which one.' : 'You haven’t hesitated over any number yet. Decisive.' },
       away: { value: String(away), line: awayLine },
@@ -193,7 +199,7 @@
     b.style.animationDuration = dur.toFixed(1) + 's';
     b.style.animationDelay = (-Math.random() * dur).toFixed(1) + 's';
     if (!TOUCH) b.addEventListener('mouseenter', function () { hovers[idx] = (hovers[idx] || 0) + 1; });
-    b.addEventListener('click', function () { clicked[idx] = true; openCard(idx); });
+    b.addEventListener('click', function () { if (piled) return; clicked[idx] = true; openCard(idx); });
     rain.appendChild(b);
     return b;
   });
@@ -215,6 +221,9 @@
       track('found-before-leaving/' + Object.keys(opened).length + '-of-' + STATS.length,
             'numbers opened before leaving (' + MODE + ')');
     }
+  });
+  document.getElementById('boringLink').addEventListener('click', function () {
+    if (openIndex !== null) track('boring-link/' + STATS[openIndex].key, 'skipped to the boring stuff from a card');
   });
   document.getElementById('storyLink').addEventListener('click', function () {
     if (openIndex !== null) track('story-link/' + STATS[openIndex].key, 'clicked through from a card');
@@ -244,6 +253,35 @@
     openIndex = null; reportOpen = false;
     card.classList.remove('open'); report.classList.remove('open');
     setDim();
+    if (!piled && Object.keys(opened).length === STATS.length && window.startPileup) pileUp();
+  }
+
+  // ---------- the pile-up (after all six are found) ----------
+  function pileUp() {
+    piled = true;
+    track('pile/started', 'all six found, pile-up started (' + MODE + ')');
+    document.getElementById('stage').classList.add('piled');
+    window.startPileup({
+      stage: document.getElementById('stage'),
+      rain: rain,
+      makeNoise: function (size) {
+        var n = document.createElement('span');
+        n.className = 'drop noise';
+        n.setAttribute('aria-hidden', 'true');
+        n.textContent = formats[Math.floor(Math.random() * formats.length)]();
+        n.style.fontSize = size + 'px';
+        rain.appendChild(n);
+        return n;
+      },
+      onSettled: function () {
+        var el = document.getElementById('found');
+        el.classList.add('show');
+        var first = el.querySelector('a');
+        if (first) first.focus({ preventScroll: true });
+      },
+      // silent: never prompted or shown, only counted
+      onTouched: function () { track('pile/touched', 'played with the pile (' + MODE + ')'); }
+    });
   }
   document.getElementById('noticeBtn').addEventListener('click', openReport);
   document.querySelectorAll('[data-close]').forEach(function (el) { el.addEventListener('click', closeAll); });

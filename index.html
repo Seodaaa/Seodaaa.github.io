@@ -54,6 +54,19 @@
   .story .bridge { font-size: 14px; color: var(--muted); font-style: italic; }
   .story-link { align-self: flex-start; font-size: 14px; margin-top: 2px; }
   .row { display: flex; flex-wrap: wrap; gap: 12px; padding-top: 6px; }
+  .boring-link { align-self: flex-start; font-size: 13px; color: var(--muted); }
+
+  /* the pile-up */
+  .drop.body { will-change: transform; cursor: grab; user-select: none; -webkit-user-select: none; touch-action: none; }
+  .drop.body.grabbed { cursor: grabbing; }
+  .piled .live:hover, .piled .live:focus-visible { text-decoration: none; }
+  .piled .bottom { opacity: 0; transition: opacity .4s; pointer-events: none; }
+  .found { position: absolute; left: 0; right: 0; top: 18%; z-index: 5; display: flex; flex-direction: column; align-items: center; gap: 14px; padding: 0 24px; text-align: center; opacity: 0; transform: translateY(10px); transition: opacity .6s, transform .6s; pointer-events: none; }
+  .found.show { opacity: 1; transform: none; }
+  .found.show .choices { pointer-events: auto; }
+  .found h1 { margin: 0; font-size: 34px; font-weight: 600; line-height: 1.25; background: var(--paper); padding: 2px 8px; }
+  .found p { margin: 0; font-size: 15px; line-height: 1.6; color: var(--muted); background: var(--paper); padding: 2px 8px; }
+  .found .choices { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
 
   #report { background: var(--paper); overflow-y: auto; justify-content: center; padding: 80px 24px 48px; }
   .report { width: 100%; max-width: 760px; display: flex; flex-direction: column; gap: 28px; animation: fadein .35s ease-out; }
@@ -77,6 +90,8 @@
     .card { padding: 24px; }
     .card .big { font-size: 48px; }
     .report h1 { font-size: 26px; }
+    .found { top: 14%; }
+    .found h1 { font-size: 26px; }
   }
 </style>
 <script data-goatcounter="https://seoda.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
@@ -114,6 +129,17 @@
         <button class="btn dark" type="button" data-close>back to the rain</button>
         <button class="btn quiet" type="button" data-report>everything I noticed →</button>
       </div>
+      <a class="boring-link" id="boringLink" href="work.html">Not your thing? Just the boring stuff →</a>
+    </div>
+  </div>
+
+  <div class="found" id="found" aria-live="polite">
+    <h1>You found all six.</h1>
+    <p>That was the fun part. Where to next?</p>
+    <div class="choices">
+      <!-- TODO: point at the story page once it exists -->
+      <a class="btn dark" href="#" id="storyPage" data-goatcounter-click="click: meet the person (pile)">Meet the person behind the numbers →</a>
+      <a class="btn" href="work.html" data-goatcounter-click="click: boring stuff (pile)">Just the boring stuff →</a>
     </div>
   </div>
 
@@ -134,6 +160,7 @@
     </div>
   </div>
 </div>
+<script src="js/pileup.js"></script>
 <script src="js/rain.js"></script>
 </body>
 </html>
