@@ -27,7 +27,7 @@
       touch: { label: 'times you tapped and missed a number',
                bridge: 'Misses are data too. Figuring out what people meant to do is what got me into psychology.' },
       storyTitle: 'Why people do what they do',
-      storyBody: 'I studied psychology at UC San Diego to understand why people pause, choose or walk away. I still use it, whether I’m reading customer data or designing something people should enjoy.' },
+      storyBody: 'I studied psychology at UC San Diego to understand why people pause, choose or walk away. I still use it, whether I’m reading customer data or designing something people will actually enjoy using.' },
     { key: 'away', label: 'times you left this tab and came back',
       touch: { label: 'times you left and came back' },
       bridge: 'Leaving and coming back is kind of my story too.',
@@ -110,7 +110,7 @@
     var px = Math.round(dist);
     // a CSS pixel is about 0.26 mm on a desktop monitor and about 0.16 mm on a phone
     var meters = px * (TOUCH ? 0.00016 : 0.0002646);
-    var distance = meters >= 1 ? 'about ' + meters.toFixed(1) + ' meters' : 'about ' + Math.max(1, Math.round(meters * 100)) + ' centimeters';
+    var distance = meters >= 1 ? 'about ' + meters.toFixed(1) + ' meters' : (function (cm) { return 'about ' + cm + (cm === 1 ? ' centimeter' : ' centimeters'); })(Math.max(1, Math.round(meters * 100)));
     var lookSecs = ((firstMove || now) - t0) / 1000;
     var stillSecs = (lastMove ? now - lastMove : now - t0) / 1000;
     var sidePct = sideTicks ? Math.round(leftTicks / sideTicks * 100) : 50;
@@ -121,11 +121,11 @@
       if (!sideTicks) sideLine = 'Tap around and I’ll tell you which side you favor.';
       else if (sidePct > 55) sideLine = 'Mostly left. Left thumb, or just where your eyes went first?';
       else if (sidePct < 45) sideLine = 'Mostly right. Is your right thumb doing all the work?';
-      else sideLine = 'Almost perfectly balanced. As all things should be.';
+      else sideLine = 'Almost exactly half and half. Very fair of you.';
       var missLine = misses >= 2 ? 'You’ve missed ' + misses + ' times. They’re slippery, I know. Every miss tells me what you were aiming for.'
         : misses === 1 ? 'One miss. Happens to everyone.' : 'Not a single miss. Steady thumbs.';
       return {
-        dist: { value: px.toLocaleString('en-US'), px: px, line: px > 0 ? 'That’s ' + distance + ' of thumb travel. I notice small things like that. Honestly, it’s most of my job.' : 'Your thumb hasn’t slid anywhere yet. Try dragging it around and watch this change.' },
+        dist: { value: px.toLocaleString('en-US'), px: px, line: px > 0 ? 'That’s ' + distance + ' of thumb travel. I notice small things like that.' : 'Your thumb hasn’t slid anywhere yet. Try dragging it around and watch this change.' },
         look: { value: lookSecs.toFixed(1), line: firstMove ? (lookSecs >= 2 ? 'You looked before you tapped. I respect that.' : 'You dove right in. I respect that too.') : 'You haven’t touched anything yet. Taking it all in?' },
         almost: { value: String(misses), line: missLine },
         away: { value: String(away), line: awayLine },
@@ -140,9 +140,9 @@
     if (!sideTicks) sideLineM = 'Move your mouse around and I’ll tell you which side you favor.';
     else if (sidePct > 55) sideLineM = 'You lean left. Maybe that’s where your eyes went first.';
     else if (sidePct < 45) sideLineM = 'You lean right. Right-handed mouse, or just a little contrarian?';
-    else sideLineM = 'Almost perfectly balanced. As all things should be.';
+    else sideLineM = 'Almost exactly half and half. Very fair of you.';
     return {
-      dist: { value: px.toLocaleString('en-US'), px: px, line: 'That’s ' + distance + ' of mouse travel. I notice small things like that. Honestly, it’s most of my job.' },
+      dist: { value: px.toLocaleString('en-US'), px: px, line: 'That’s ' + distance + ' of mouse travel. I notice small things like that.' },
       look: { value: lookSecs.toFixed(1), line: firstMove ? (lookSecs >= 2 ? 'You looked before you leapt. I respect that.' : 'You dove right in. I respect that too.') : 'You still haven’t moved your mouse. Taking it all in?' },
       almost: { value: String(almost), line: almost >= 2 ? 'There’s a number you hovered over ' + almost + ' times without clicking. Curious but cautious? I won’t tell you which one.' : 'You haven’t hesitated over any number yet. Decisive.' },
       away: { value: String(away), line: awayLine },
