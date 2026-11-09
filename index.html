@@ -68,7 +68,9 @@
   .found p { margin: 0; font-size: 15px; line-height: 1.6; color: var(--muted); background: var(--paper); padding: 2px 8px; }
   .found .choices { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
 
-  #report { background: var(--paper); overflow-y: auto; justify-content: center; padding: 80px 24px 48px; }
+  #report { background: var(--paper); overflow-y: auto; justify-content: center; padding: 80px 24px 0; }
+  /* breathing room under the last buttons (bottom padding on a scroll box gets dropped in some browsers) */
+  .report::after { content: ""; display: block; height: 120px; flex: none; }
   .report { width: 100%; max-width: 760px; display: flex; flex-direction: column; gap: 28px; animation: fadein .35s ease-out; }
   .report h1 { margin: 0; font-size: 34px; font-weight: 600; line-height: 1.25; }
   .report .note { margin: 0; font-size: 15px; line-height: 1.6; color: var(--muted); }
